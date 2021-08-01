@@ -1,0 +1,12 @@
+Template: app-apc-reporter/backend
+Type: string
+Default: http://192.168.0.10:8668
+Description: backend address:
+   Endpoint (http, https, mqtt) where events should be forwarded to
+
+Template: app-apc-reporter/cronpattern
+Type: string
+Default: */5 * * * *
+Description: cron pattern:
+    how often should the APC status be POSTed?
+

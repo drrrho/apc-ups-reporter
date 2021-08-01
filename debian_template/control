@@ -1,0 +1,13 @@
+Source: app-apc-reporter
+Section: perl
+Priority: optional
+Maintainer: Robert Barta <rho@devc.at>
+Build-Depends: debhelper (>= 8)
+Build-Depends-Indep: libmodule-build-perl, perl-modules, perl
+Standards-Version: 3.9.2
+
+Package: app-apc-reporter
+Architecture: all
+Depends: apcupsd, debconf
+Description: APC UPS reporting
+

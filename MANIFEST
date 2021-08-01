@@ -1,0 +1,9 @@
+Build.PL
+Changes
+lib/App/APC/Reporter.pm
+MANIFEST			This list of files
+README
+etc/apc-ups-reporter.conf
+bin/apc-ups-reporter
+META.yml
+META.json
