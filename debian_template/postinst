@@ -1,8 +1,26 @@
+#!/bin/bash
+
 . /usr/share/debconf/confmodule
 
-db_get app-apc-reporter/backend && backend="$RET"
-echo "POSTINST backend $RET"
+# 1) modify the original SCRIPTDIR in the apcupds configuration
+APCUPSD_CONF=/etc/apcupsd/apcupsd.conf
+sed -E "/SCRIPTDIR/s|/etc/apcupsd|/var/lib/app-apc-reporter|" ${APCUPSD_CONF} > ${APCUPSD_CONF}.$$
+mv ${APCUPSD_CONF}.$$ ${APCUPSD_CONF}
 
+# 2) create own config with the backend
+db_get app-apc-reporter/backend && backend="$RET"
+echo "POSTINST backend $backend"
+echo "BACKEND=$backend" > /etc/app-apc-reporter.conf
+
+
+# 3) add cron job for status reports
 db_get app-apc-reporter/cronpattern && cronpattern="$RET"
 echo "POSTINST cronpattern $RET"
+
+CRONJOB=/etc/cron.d/app-apc-reporter
+sed -E "/\sroot\s/s|^.+root|$cronpattern\troot|" ${CRONJOB} > ${CRONJOB}.$$
+mv ${CRONJOB}.$$ ${CRONJOB}
+
+
+
 

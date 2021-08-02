@@ -65,9 +65,11 @@ my $builder = $debian->new(
 	'var'        => '/var/lib/app-apc-reporter',
 	'bin'        => '/usr/bin',
 	'etc'        => '/etc/',
+	'etc-cron.d' => '/etc/cron.d/',
     },
     conf_files => {
         'etc/apc-ups-reporter.conf' => 'etc/apc-ups-reporter.conf',
+        'etc/crontab'               => 'etc-cron.d/app-apc-reporter',
     },
     bin_files => {
         'bin/apc-ups-reporter' => 'bin/apc-ups-reporter',

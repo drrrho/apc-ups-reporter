@@ -4,6 +4,7 @@ lib/App/APC/Reporter.pm
 MANIFEST			This list of files
 README
 etc/apc-ups-reporter.conf
+etc/crontab
 bin/apc-ups-reporter
 META.yml
 META.json
