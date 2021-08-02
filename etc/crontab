@@ -1,5 +1,5 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-0 * * * *   root	( /sbin/apcaccess | /usr/bin/apc-ups-reporter 'status' ) > /dev/null
+0 * * * *   root	( /sbin/apcaccess | /var/lib/app-apc-reporter/status ) > /dev/null
 

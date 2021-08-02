@@ -1,4 +1,60 @@
 #!/usr/bin/perl
 
-warn "fake";
+use strict;
+use warnings;
 
+no if $] >= 5.018, warnings => "experimental::smartmatch";
+
+use Data::Dumper;
+
+
+use Config::Simple;
+my $cfg = Config::Simple->new( '/etc/app-apc-reporter.conf');
+
+my $backend = $cfg->param('BACKEND');
+
+
+(my $event_type = $0) =~ s|^.+/||;
+my $data = { # agenda
+    EVENT_TYPE => $event_type,
+};
+
+
+if ($event_type eq 'status') { # in that case we get a HASH (well, text actually) via STDIN
+    while (my $line = <>) {
+        my ($key, $value) = split /\s*:\s*/, $line;
+        chomp $value;
+	next if $key eq 'END APC';
+	$data->{$key} = $value;
+    }
+} else {
+    $data->{HOSTNAME} = 'blade4';
+}
+
+use feature "switch";
+given ($backend) {
+    when (/^https?:/) {
+	use LWP::UserAgent;
+        my $ua = LWP::UserAgent->new;
+	$ua->agent('APC status reporter');
+
+	use HTTP::Request;
+	my $req = HTTP::Request->new( POST => $backend );
+	$req->content_type( 'application/json' );
+
+	use JSON;
+	$req->content( to_json( $data ) );
+
+	my $res = $ua->request($req);
+        if ($res->is_success) {
+	    # ok
+        } else {
+            die "http request ended with ".$res->status_line;
+        }
+    }
+    when (/^mailto:/) { die "not yet implemented" }
+    when (/^mqtt:/)   { die "not yet implemented" }
+    default {
+	die "unrecognized protocol '$backend'";
+    }
+}
