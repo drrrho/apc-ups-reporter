@@ -25,7 +25,7 @@ sub ACTION_debian {
 
     my $version = $self->dist_version;
     my $debversion = $self->DEBVERSION;
-    $self->do_system(qq{ dh-make-perl make --packagename=app-apc-reporter --version=$version-$debversion App-APC-Reporter-$version } );
+    $self->do_system(qq{ dh-make-perl make --email=rho\@devc.at --desc='APC UPS reporting' --packagename=app-apc-reporter --version=$version-$debversion App-APC-Reporter-$version } );
     $self->do_system(qq{ cp debian_template/* App-APC-Reporter-$version/debian/ } );
     $self->do_system(qq{ ( cd App-APC-Reporter-$version/ ; debuild --no-lintian -us -uc -b ) } );
 }
@@ -58,6 +58,9 @@ my $builder = $debian->new(
         'Test::More' => '0',
     },
     requires => {
+	'Config::Simple' => 0,
+	'LWP' => 0,
+	'JSON' => 0,
     },
     add_to_cleanup     => [ 'App-APC-Reporter-*' ],
     install_base       => '/usr',

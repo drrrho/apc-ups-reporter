@@ -8,6 +8,6 @@ Standards-Version: 3.9.2
 
 Package: app-apc-reporter
 Architecture: all
-Depends: apcupsd, debconf
+Depends: apcupsd, debconf, perl-modules, perl, libconfig-simple-perl, libwww-perl, libjson-perl
 Description: APC UPS reporting
 
